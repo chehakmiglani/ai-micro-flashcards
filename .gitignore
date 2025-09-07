@@ -1,0 +1,27 @@
+# Node / React
+frontend/node_modules/
+frontend/.pnp/
+frontend/.pnp.js
+frontend/.cache/
+frontend/build/
+
+# Python / FastAPI
+backend/__pycache__/
+backend/.venv/
+backend/venv/
+*.pyc
+
+# SQLite DB
+backend/flashcards.db
+
+# Env / secrets
+.env
+*.env
+.env.*
+backend/.env
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
