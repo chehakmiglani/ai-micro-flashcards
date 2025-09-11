@@ -142,7 +142,7 @@ app.add_middleware(
 )
 
 # --- 4. Database Setup and Functions ---
-DB_NAME = 'flashcards.db'
+DB_NAME = os.getenv('DB_PATH', 'flashcards.db')
 
 def get_db_connection():
     """Establishes a connection to the SQLite database."""

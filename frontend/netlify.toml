@@ -1,0 +1,6 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[template.environment]
+  REACT_APP_API_BASE_URL = "https://YOUR-BACKEND-URL"
