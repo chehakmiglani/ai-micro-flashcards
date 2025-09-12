@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: flashcards-backend
+    env: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    autoDeploy: true
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: DB_PATH
+        value: /var/data/flashcards.db
+
+  - type: static
+    name: flashcards-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_BASE_URL
+        # Replace this after backend is live if different
+        value: https://flashcards-backend.onrender.com
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+    rewrites:
+      - source: /dashboard
+        destination: /index.html
+      - source: /analytics
+        destination: /index.html
+      - source: /study/*
+        destination: /index.html
+      - source: /c/*
+        destination: /index.html
