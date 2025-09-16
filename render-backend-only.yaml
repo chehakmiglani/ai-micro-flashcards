@@ -1,0 +1,20 @@
+version: 1
+services:
+  - type: web
+    name: flashcards-backend
+    env: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    autoDeploy: true
+    healthCheckPath: /healthz
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: DB_PATH
+        value: /var/data/flashcards.db

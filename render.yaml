@@ -1,3 +1,4 @@
+version: 1
 services:
   - type: web
     name: flashcards-backend
@@ -18,7 +19,7 @@ services:
       - key: DB_PATH
         value: /var/data/flashcards.db
 
-  - type: static
+  - type: static_site
     name: flashcards-frontend
     rootDir: frontend
     buildCommand: npm install && npm run build
