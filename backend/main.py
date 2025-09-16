@@ -277,3 +277,21 @@ def delete_a_flashcard(flashcard_id: int):
 # --- 6. Application Startup Logic ---
 # This line runs when the script starts, ensuring the database table exists.
 init_db()
+
+# --- 7. Health Check Endpoint ---
+@app.get('/healthz')
+def healthz():
+    """Lightweight health check for Render & uptime monitors.
+
+    Performs a trivial DB query to ensure the SQLite file is reachable.
+    Returns 200 with status info if OK, else raises 500.
+    """
+    try:
+        conn = get_db_connection()
+        cursor = conn.execute('SELECT 1')
+        cursor.fetchone()
+        conn.close()
+        return {"status": "ok", "db": "up"}
+    except Exception as e:
+        logger.exception("Health check failed")
+        raise HTTPException(status_code=500, detail="unhealthy")

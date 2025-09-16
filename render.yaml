@@ -7,6 +7,7 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     autoDeploy: true
+    healthCheckPath: /healthz
     disk:
       name: data
       mountPath: /var/data
@@ -17,7 +18,7 @@ services:
       - key: DB_PATH
         value: /var/data/flashcards.db
 
-  - type: static
+  - type: static_site
     name: flashcards-frontend
     rootDir: frontend
     buildCommand: npm install && npm run build
