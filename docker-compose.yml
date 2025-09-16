@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: flashcards-backend:dev
+    container_name: flashcards-backend
+    env_file:
+      - .env
+    environment:
+      DB_PATH: ${DB_PATH:-/data/flashcards.db}
+    volumes:
+      - backend-data:/data
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    container_name: flashcards-frontend
+    environment:
+      REACT_APP_API_BASE_URL: http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm start"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  backend-data:
